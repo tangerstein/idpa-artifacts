@@ -27,6 +27,22 @@ inputs:
   - http://carts/carts/57a98d98e4b00679b4a830b2/items
   - http://carts/carts/57a98d98e4b00679b4a830b5/items
 
+- !<direct>
+  &Input_ordersSearchOrdersUsingGET_custId_REQ_PARAM data:
+  - 57a98d98e4b00679b4a830af
+  - 57a98d98e4b00679b4a830b2
+  - 57a98d98e4b00679b4a830b5
+
+- !<direct>
+  &Input_ordersSearchOrdersUsingGET_sort_REQ_PARAM data:
+  - date
+
+- !<extracted>
+  &Input_ordersGetOrderUsingGET_orderId_URL_PART extractions:
+  - from: ordersSearchOrdersUsingGET
+    pattern: 'orders/([a-z0-9]+)"'
+    match-number: 1
+
 - !<json>
   &Input_ordersCreateOrderUsingPOST_body_BODY type: object
   items:
@@ -53,9 +69,18 @@ endpoint-annotations:
   parameter-annotations:
   - parameter: ordersCreateOrderUsingPOST_body_BODY
     input: *Input_ordersCreateOrderUsingPOST_body_BODY
-- endpoint: ordersGetOrdersUsingGET
+- endpoint: ordersSearchOrdersUsingGET
   overrides: []
-  parameter-annotations: []
+  parameter-annotations:
+  - parameter: ordersSearchOrdersUsingGET_sort_REQ_PARAM
+    input: *Input_ordersSearchOrdersUsingGET_sort_REQ_PARAM
+  - parameter: ordersSearchOrdersUsingGET_custId_REQ_PARAM
+    input: *Input_ordersSearchOrdersUsingGET_custId_REQ_PARAM
 - endpoint: ordersGetHealthUsingGET
   overrides: []
   parameter-annotations: []
+- endpoint: ordersGetOrderUsingGET
+  overrides: []
+  parameter-annotations:
+  - parameter: ordersGetOrderUsingGET_orderId_URL_PART
+    input: *Input_ordersGetOrderUsingGET_orderId_URL_PART
